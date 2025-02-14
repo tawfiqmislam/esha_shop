@@ -15,7 +15,8 @@
     use App\Http\Controllers\PayPalController;
     use App\Http\Controllers\NotificationController;
     use App\Http\Controllers\HomeController;
-    use \UniSharp\LaravelFilemanager\Lfm;
+use App\Http\Controllers\SslCommerzPaymentController;
+use \UniSharp\LaravelFilemanager\Lfm;
 
     /*
     |--------------------------------------------------------------------------
@@ -117,6 +118,15 @@
     Route::get('cancel', [PayPalController::class, 'cancel'])->name('payment.cancel');
     Route::get('payment/success', [PayPalController::class, 'success'])->name('payment.success');
 
+    Route::prefix('sslcommerz')->group(function() {
+        Route::any('/pay', [SslCommerzPaymentController::class, 'index'])->name('sslcommerz.pay');
+        
+        Route::post('/success', [SslCommerzPaymentController::class, 'success']);
+        Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
+        Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
+        
+        Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
+    });
 
 // Backend section start
 

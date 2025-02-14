@@ -1,6 +1,10 @@
 <?php
 
 return [
+    
+    'sslcz_store_id' => env('SSLCZ_STORE_ID', null),
+    'sslcz_store_password' => env('SSLCZ_STORE_PASSWORD', null),
+    'sslcz_test_mode' => env('SSLCZ_TESTMODE', true),
 
     /*
     |--------------------------------------------------------------------------

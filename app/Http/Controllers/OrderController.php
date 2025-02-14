@@ -60,33 +60,8 @@ class OrderController extends Controller
             request()->session()->flash('error','Cart is Empty !');
             return back();
         }
-        // $cart=Cart::get();
-        // // return $cart;
-        // $cart_index='ORD-'.strtoupper(uniqid());
-        // $sub_total=0;
-        // foreach($cart as $cart_item){
-        //     $sub_total+=$cart_item['amount'];
-        //     $data=array(
-        //         'cart_id'=>$cart_index,
-        //         'user_id'=>$request->user()->id,
-        //         'product_id'=>$cart_item['id'],
-        //         'quantity'=>$cart_item['quantity'],
-        //         'amount'=>$cart_item['amount'],
-        //         'status'=>'new',
-        //         'price'=>$cart_item['price'],
-        //     );
 
-        //     $cart=new Cart();
-        //     $cart->fill($data);
-        //     $cart->save();
-        // }
-
-        // $total_prod=0;
-        // if(session('cart')){
-        //         foreach(session('cart') as $cart_items){
-        //             $total_prod+=$cart_items['quantity'];
-        //         }
-        // }
+        // return request('payment_method');
 
         $order=new Order();
         $order_data=$request->all();
@@ -122,6 +97,10 @@ class OrderController extends Controller
             $order_data['payment_method']='paypal';
             $order_data['payment_status']='paid';
         }
+        else if(request('payment_method')=='sslcommerz'){
+            $order_data['payment_method']='sslcommerz';
+            $order_data['payment_status']='pending';
+        }
         else{
             $order_data['payment_method']='cod';
             $order_data['payment_status']='Unpaid';
@@ -139,8 +118,9 @@ class OrderController extends Controller
         Notification::send($users, new StatusNotification($details));
         if(request('payment_method')=='paypal'){
             return redirect()->route('payment')->with(['id'=>$order->id]);
-        }
-        else{
+        } else if(request('payment_method')=='sslcommerz'){
+            return redirect()->route('sslcommerz.pay')->with(['id'=>$order->id]);
+        } else{
             session()->forget('cart');
             session()->forget('coupon');
         }
