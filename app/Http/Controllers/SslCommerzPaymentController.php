@@ -9,6 +9,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\User;
+use App\Services\ReveSmsGateway;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 
@@ -68,7 +69,7 @@ class SslCommerzPaymentController extends Controller
         }
     }
 
-    public function success(Request $request)
+    public function success(Request $request, ReveSmsGateway $sms)
     {
         $tran_id = $request->input('tran_id');
         $amount = $request->input('amount');
@@ -78,6 +79,11 @@ class SslCommerzPaymentController extends Controller
 
         #Check order status in order tabel against the transaction id or order id.
         $order_details = Order::where('order_number', $tran_id)->first();
+
+        $smsContext = [[
+            'phone' => $order_details->phone,
+            'message' => "Your order has been placed. Your order number is: ".$order_details->order_number
+        ]];
 
         if ($order_details->payment_status == 'pending') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
@@ -95,6 +101,8 @@ class SslCommerzPaymentController extends Controller
                 Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order_details->id]);
 
                 session()->flash('success', 'Transaction is successfully Completed');
+
+                $sms->send($smsContext);
             } else {
                 
                 $order_details->update(['payment_status' => 'failed']);
@@ -113,6 +121,8 @@ class SslCommerzPaymentController extends Controller
                 Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order_details->id]);
             }
             session()->flash('success', 'Transaction is successfully Completed');
+
+            $sms->send($smsContext);
         } else {
             #That means something wrong happened. You can redirect customer to your product page.
             session()->flash('error', 'Invalid Transaction');

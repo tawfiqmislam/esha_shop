@@ -12,6 +12,7 @@ use Notification;
 use Helper;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
+use App\Services\ReveSmsGateway;
 
 class OrderController extends Controller
 {
@@ -42,7 +43,7 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, ReveSmsGateway $sms)
     {
         $this->validate($request,[
             'first_name'=>'string|required',
@@ -121,6 +122,10 @@ class OrderController extends Controller
         } else if(request('payment_method')=='sslcommerz'){
             return redirect()->route('sslcommerz.pay')->with(['id'=>$order->id]);
         } else{
+            $sms->send([[
+                'phone' => $request->phone,
+                'message' => "Your order has been placed. Order number: $order->order_number"
+            ]]);
             session()->forget('cart');
             session()->forget('coupon');
         }
@@ -163,7 +168,7 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, ReveSmsGateway $sms)
     {
         $order=Order::find($id);
         $this->validate($request,[
@@ -182,6 +187,10 @@ class OrderController extends Controller
         $status=$order->fill($data)->save();
         if($status){
             request()->session()->flash('success','Successfully updated order');
+            $sms->send([[
+                'phone' => $order->phone,
+                'message' => "Your order has been ". $order->status .". Order number: $order->order_number"
+            ]]);
         }
         else{
             request()->session()->flash('error','Error while updating order');

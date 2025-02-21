@@ -6,6 +6,14 @@ return [
     'sslcz_store_password' => env('SSLCZ_STORE_PASSWORD', null),
     'sslcz_test_mode' => env('SSLCZ_TESTMODE', true),
 
+    'sms_send' => env('SMS_SEND', false),
+    'sms_cost' => env('SMS_COST', 0.50),
+
+    'revesms_api_key' => env('REVESMS_API_KEY', null),
+    'revesms_secret_key' => env('REVESMS_SECRET_KEY', null),
+    'revesms_caller_id' => env('REVESMS_CALLER_ID', null),
+    'revesms_client' => env('REVESMS_CLIENT', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
