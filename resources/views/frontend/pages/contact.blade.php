@@ -107,8 +107,13 @@
 	
 	<!-- Map Section -->
 	<div class="map-section">
-		<div id="myMap">
-			<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14130.857353934944!2d85.36529494999999!3d27.6952226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sne!2snp!4v1595323330171!5m2!1sne!2snp" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+		<div id="myMap" class="map-container">
+			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.8357532991467!2d91.83140177554444!3d22.346137979653708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30ad275fcbfb64a5%3A0x9602e9dd44aeef2d!2sChittagong%20Independent%20University!5e1!3m2!1sen!2sbd!4v1740132387470!5m2!1sen!2sbd" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+			<div class="overlay">
+				<img src="@foreach ($settings as $data) {{ $data->photo }} @endforeach" alt="@foreach ($settings as $data) {{ $data->photo }} @endforeach">
+				<span>Esha Shop</span>
+			</div>
+		
 		</div>
 	</div>
 	<!--/ End Map Section -->
