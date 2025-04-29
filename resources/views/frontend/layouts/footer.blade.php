@@ -8,7 +8,7 @@
                     <!-- Single Widget -->
                     <div class="single-footer about">
                         <div class="logo">
-                            <a href="index.html"><img src="{{ asset('backend/img/logo1.png') }}" alt="#"
+                            <a href="index.html"><img src="{{ asset('frontend/img/logo.png') }}" alt="#"
                                     style="height: 100px;"></a>
                         </div>
                         @php

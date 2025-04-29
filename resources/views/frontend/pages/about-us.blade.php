@@ -47,7 +47,7 @@
                         {{-- <div class="button">
 								<a href="https://www.youtube.com/watch?v=nh2aYrGMrIE" class="video video-popup mfp-iframe"><i class="fa fa-play"></i></a>
 							</div> --}}
-                        <img src="//storage//photos//1//logo10.png"
+                        <img src="{{ asset('frontend/img/logo.png') }}"
                             alt="@foreach ($settings as $data) {{ $data->photo }} @endforeach">
                     </div>
                 </div>
