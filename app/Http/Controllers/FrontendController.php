@@ -9,6 +9,7 @@ use App\Models\PostCategory;
 use App\Models\Post;
 use App\Models\Cart;
 use App\Models\Brand;
+use App\Models\Coupon;
 use App\User;
 use Auth;
 use Session;
@@ -32,7 +33,8 @@ class FrontendController extends Controller
         $products=Product::where('status','active')->orderBy('id','DESC')->limit(8)->get();
         $category=Category::where('status','active')->where('is_parent',1)->orderBy('title','ASC')->get();
         // return $category;
-        return view('frontend.index')
+        $coupons=Coupon::where('status','active')->limit(3)->orderBy('id','DESC')->get();
+        return view('frontend.index', compact('coupons'))
                 ->with('featured',$featured)
                 ->with('posts',$posts)
                 ->with('banners',$banners)

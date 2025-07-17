@@ -22,6 +22,7 @@
               <th>Coupon Code</th>
               <th>Type</th>
               <th>Value</th>
+              <th>Minimum Amount</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -32,6 +33,7 @@
                 <th>Coupon Code</th>
                 <th>Type</th>
                 <th>Value</th>
+                <th>Minimum Amount</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -54,6 +56,7 @@
                         @else
                             {{$coupon->value}}%
                         @endif</td>
+                    <td>{{number_format($coupon->min_purchase_amount,2)}}</td>
                     <td>
                         @if($coupon->status=='active')
                             <span class="badge badge-success">{{$coupon->status}}</span>

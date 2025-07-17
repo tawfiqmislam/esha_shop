@@ -104,6 +104,7 @@ class CartController extends Controller
         $cart = Cart::find($request->id);
         if ($cart) {
             $cart->delete();
+            session()->forget('coupon');
             request()->session()->flash('success','Cart successfully removed');
             return back();  
         }

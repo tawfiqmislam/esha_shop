@@ -303,6 +303,38 @@
 </section>
 <!-- End Shop Home List  -->
 
+
+<!-- Start Coupon Area -->
+<section class="coupon-area section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>Available Coupons</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @foreach($coupons as $coupon)
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="single-coupon" style="border: 2px dashed #e9e9e9; padding: 20px; margin-bottom: 30px; text-align: center;">
+                        <div class="coupon-body">
+                            @if($coupon->type == 'fixed')
+                                <h3 style="color: #ff2d2d; font-size: 24px; margin-bottom: 10px;">${{number_format($coupon->value, 2)}} OFF</h3>
+                            @else
+                                <h3 style="color: #ff2d2d; font-size: 24px; margin-bottom: 10px;">{{$coupon->value}}% OFF</h3>
+                            @endif
+                            <p style="color: #666;">To be used on orders over ${{number_format($coupon->min_purchase_amount, 2)}}</p>
+                            <p style="color: #666;">Use code: <strong>{{$coupon->code}}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+<!-- End Coupon Area -->
+
 <!-- Start Shop Blog  -->
 <section class="shop-blog section">
     <div class="container">

@@ -33,6 +33,14 @@
             <span class="text-danger">{{$message}}</span>
             @enderror
         </div>
+
+        <div class="form-group">
+            <label for="min_purchase_amount" class="col-form-label">Minimum purchase amount <span class="text-danger">*</span></label>
+            <input id="min_purchase_amount" type="number" name="min_purchase_amount" placeholder="Enter Minimum purchase amount"  value="{{old('min_purchase_amount')}}" class="form-control">
+            @error('min_purchase_amount')
+            <span class="text-danger">{{$message}}</span>
+            @enderror
+        </div>
         
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>

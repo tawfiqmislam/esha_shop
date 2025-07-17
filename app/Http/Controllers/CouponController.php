@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use Helper;
+
 class CouponController extends Controller
 {
     /**
@@ -40,6 +42,7 @@ class CouponController extends Controller
             'code'=>'string|required',
             'type'=>'required|in:fixed,percent',
             'value'=>'required|numeric',
+            'min_purchase_amount'=>'required|numeric',
             'status'=>'required|in:active,inactive'
         ]);
         $data=$request->all();
@@ -94,6 +97,7 @@ class CouponController extends Controller
             'code'=>'string|required',
             'type'=>'required|in:fixed,percent',
             'value'=>'required|numeric',
+            'min_purchase_amount'=>'required|numeric',
             'status'=>'required|in:active,inactive'
         ]);
         $data=$request->all();
@@ -143,8 +147,11 @@ class CouponController extends Controller
             return back();
         }
         if($coupon){
-            $total_price=Cart::where('user_id',auth()->user()->id)->where('order_id',null)->sum('price');
-            // dd($total_price);
+            $total_price=Helper::totalCartPrice();
+            if(!$coupon->isEligible($total_price)){
+                request()->session()->flash('error','Minimum purchase amount should be '.$coupon->min_purchase_amount);
+                return back();
+            }
             session()->put('coupon',[
                 'id'=>$coupon->id,
                 'code'=>$coupon->code,

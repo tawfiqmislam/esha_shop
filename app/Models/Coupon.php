@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Coupon extends Model
 {
-    protected $fillable=['code','type','value','status'];
+    protected $fillable=['code','type','value','min_purchase_amount','status'];
 
     public static function findByCode($code){
         return self::where('code',$code)->first();
@@ -21,5 +21,10 @@ class Coupon extends Model
         else{
             return 0;
         }
+    }
+
+    public function isEligible($cartTotal)
+    {
+        return $cartTotal < $this->min_purchase_amount ? false : true;
     }
 }
