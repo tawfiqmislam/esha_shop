@@ -211,3 +211,12 @@ use \UniSharp\LaravelFilemanager\Lfm;
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
         Lfm::routes();
     });
+
+// Chat Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chats', 'ChatController@index')->name('chat.index');
+    Route::post('/chats', 'ChatController@store')->name('chat.store');
+    Route::get('/chats/{chat}', 'ChatController@show')->name('chat.show');
+    Route::post('/chats/{chat}/messages', 'ChatController@sendMessage')->name('chat.messages.store');
+    Route::post('/chats/{chat}/read', 'ChatController@markAsRead')->name('chat.messages.read');
+});
