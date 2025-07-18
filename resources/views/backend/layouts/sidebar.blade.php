@@ -131,6 +131,17 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider">
+    
+
+    <!-- Chat -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('chat.index')}}">
+            <i class="fas fa-comments"></i>
+            <span>Chat</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
     <!-- Heading -->
     <div class="sidebar-heading">

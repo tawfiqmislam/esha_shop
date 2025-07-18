@@ -55,6 +55,17 @@
           <span>Comments</span>
       </a>
     </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    
+    <!-- Chat -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('chat.index')}}">
+            <i class="fas fa-comments"></i>
+            <span>Chat</span></a>
+    </li>
+    
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
       <button class="rounded-circle border-0" id="sidebarToggle"></button>
