@@ -13,17 +13,37 @@
                     </div>
                 @endforeach
             </div>
-            <div class="chat-input">
-                <form id="message-form">
+            <div class="chat-input mt-3">
+                <form id="message-form" style="text-align: right;">
                     @csrf
                     <input type="text" id="message-input" class="form-control" placeholder="Type a message...">
-                    <button type="submit" class="btn btn-primary">Send</button>
+                    <button type="submit" class="btn btn-primary mt-2">Send</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+
+@push('styles')
+<style>
+    .sent {
+        text-align: right;
+    }
+    .message p {
+        background-color: #f8f9fa;
+        padding: 10px;
+        margin-bottom: 0;
+        display: inline-block;
+    }
+    .message span {
+        display: block;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+</style>
+@endpush
 
 @push('scripts')
 <script>

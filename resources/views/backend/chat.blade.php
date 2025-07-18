@@ -1,4 +1,4 @@
-@extends('backend.layouts.master')
+@extends($isAdmin ? 'backend.layouts.master' : 'user.layouts.master')
 
 @section('main-content')
 <div class="card">
@@ -29,11 +29,11 @@
                             <small class="text-muted">
                                 {{ $chat->updated_at->diffForHumans() }}
                             </small>
-                            @if($chat->messages->where('is_read', false)->where('user_id', '!=', auth()->id())->count() > 0)
+                            {{-- @if($chat->messages->where('is_read', false)->where('user_id', '!=', auth()->id())->count() > 0)
                                 <span class="badge badge-primary">
                                     {{ $chat->messages->where('is_read', false)->where('user_id', '!=', auth()->id())->count() }}
                                 </span>
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
                 </a>

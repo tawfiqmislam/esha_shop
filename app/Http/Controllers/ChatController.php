@@ -20,7 +20,8 @@ class ChatController extends Controller
                         ->latest()
                         ->get();
         }
-        return view('backend.chat', compact('chats'));
+        $isAdmin = $user->role=='admin' ? true : false;
+        return view('backend.chat', compact('chats', 'isAdmin'));
     }
 
     public function store(Request $request)
