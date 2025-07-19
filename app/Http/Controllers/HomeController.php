@@ -71,7 +71,7 @@ class HomeController extends Controller
                 // $status=$order->delete();
                 $status=$order->update([
                     'status'=>'cancel',
-                    'canceled_by'=>'user',
+                    'cancel_by'=>'user',
                     'cancel_date'=>date('Y-m-d'),
                     'is_refundable' => $order->created_at->diffInDays(now()) < 7 ? 1 : 0,
                 ]);

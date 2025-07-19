@@ -175,7 +175,8 @@ class OrderController extends Controller
     {
         $order=Order::find($id);
         $this->validate($request,[
-            'status'=>'required|in:new,process,delivered,cancel'
+            'status'=>'required|in:new,process,delivered,cancel,refunded',
+            'refund_amount'=>'required_if:status,refunded'
         ]);
         $data=$request->all();
         // return $request->status;
@@ -186,6 +187,8 @@ class OrderController extends Controller
                 $product->stock -=$cart->quantity;
                 $product->save();
             }
+        } else if($request->status=='refunded'){
+            $data['refund_date']=date('Y-m-d');
         }
         $status=$order->fill($data)->save();
         if($status){

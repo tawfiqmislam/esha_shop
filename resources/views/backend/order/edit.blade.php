@@ -11,17 +11,39 @@
       @method('PATCH')
       <div class="form-group">
         <label for="status">Status :</label>
-        <select name="status" id="" class="form-control">
+        <select name="status" id="order-status" class="form-control" onchange="handleStatusChange(this.value)">
           <option value="new" {{($order->status=='delivered' || $order->status=="process" || $order->status=="cancel") ? 'disabled' : ''}}  {{(($order->status=='new')? 'selected' : '')}}>New</option>
           <option value="process" {{($order->status=='delivered'|| $order->status=="cancel") ? 'disabled' : ''}}  {{(($order->status=='process')? 'selected' : '')}}>process</option>
           <option value="delivered" {{($order->status=="cancel") ? 'disabled' : ''}}  {{(($order->status=='delivered')? 'selected' : '')}}>Delivered</option>
-          <option value="cancel" {{($order->status=='delivered') ? 'disabled' : ''}}  {{(($order->status=='cancel')? 'selected' : '')}}>Cancel</option>
+          <option value="cancel" {{($order->status=='refunded') ? 'disabled' : ''}}  {{(($order->status=='cancel')? 'selected' : '')}}>Cancel</option>
+          <option value="refunded" {{($order->status=='refunded') ? 'disabled' : ''}}  {{(($order->status=='refunded')? 'selected' : '')}}>Refunded</option>
         </select>
+      </div>
+      <div class="form-group" id="refund_amount_section" style="display: none;">
+        <label for="status">Refund Amount :</label>
+        <input type="number" name="refund_amount" class="form-control" value="{{(int)($order->total_amount + $order->delivery_charge)}}" disabled />
       </div>
       <button type="submit" class="btn btn-primary">Update</button>
     </form>
   </div>
 </div>
+
+<script>
+  function handleStatusChange(value){
+    $("#refund_amount_section").hide();
+    $("#refund_amount_section input").attr("disabled","disabled");
+
+    if(value!="refunded") return;
+    
+    $("#refund_amount_section").show();
+    $("#refund_amount_section input").removeAttr("disabled");
+  }
+
+  document.addEventListener("DOMContentLoaded",function(){
+    handleStatusChange($("#order-status").val());
+  })
+</script>
+
 @endsection
 
 @push('styles')
