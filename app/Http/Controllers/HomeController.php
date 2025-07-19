@@ -60,20 +60,26 @@ class HomeController extends Controller
         $orders=Order::orderBy('id','DESC')->where('payment_status','paid')->where('user_id',auth()->user()->id)->paginate(10);
         return view('user.order.index')->with('orders',$orders);
     }
-    public function userOrderDelete($id)
+    public function userOrderCancel($id)
     {
         $order=Order::find($id);
         if($order){
            if($order->status=="process" || $order->status=='delivered' || $order->status=='cancel'){
-                return redirect()->back()->with('error','You can not delete this order now');
+                return redirect()->back()->with('error','You can not cancel this order now');
            }
            else{
-                $status=$order->delete();
+                // $status=$order->delete();
+                $status=$order->update([
+                    'status'=>'cancel',
+                    'canceled_by'=>'user',
+                    'cancel_date'=>date('Y-m-d'),
+                    'is_refundable' => $order->created_at->diffInDays(now()) < 7 ? 1 : 0,
+                ]);
                 if($status){
-                    request()->session()->flash('success','Order Successfully deleted');
+                    request()->session()->flash('success','Order Successfully canceled');
                 }
                 else{
-                    request()->session()->flash('error','Order can not deleted');
+                    request()->session()->flash('error','Order can not canceled');
                 }
                 return redirect()->route('user.order.index');
            }

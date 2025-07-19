@@ -46,7 +46,7 @@
           <tbody>
             @foreach($orders as $order)
                 <tr>
-                    <td>{{$order->id}}</td>
+                    <td>{{$loop->iteration}}</td>
                     <td>{{$order->order_number}}</td>
                     <td>{{$order->first_name}} {{$order->last_name}}</td>
                     <td>{{$order->email}}</td>
@@ -63,15 +63,20 @@
                         @else
                           <span class="badge badge-danger">{{$order->status}}</span>
                         @endif
+                        @if($order->status=='cancel')
+                          <span class="badge badge-info">{{$order->is_refundable == 1 ? 'Refundable' : 'Not Refundable'}}</span>
+                        @endif
                     </td>
                     <td>{{$order->created_at->format('M d D, Y g: i a')}}</td>
                     <td>
                         <a href="{{route('user.order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
-                        <form method="POST" action="{{route('user.order.delete',[$order->id])}}">
-                          @csrf
-                          @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$order->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                        </form>
+                        @if($order->status=='new')
+                          <form method="POST" action="{{route('user.order.delete',[$order->id])}}">
+                            @csrf
+                            @method('delete')
+                                <button class="btn btn-danger btn-sm" data-id={{$order->id}} data-toggle="tooltip" data-placement="bottom" title="Delete">Cancel</button>
+                          </form>
+                        @endif
                     </td>
                 </tr>
             @endforeach
