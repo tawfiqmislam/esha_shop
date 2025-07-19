@@ -21,7 +21,7 @@
       </div>
       <div class="form-group" id="refund_amount_section" style="display: none;">
         <label for="status">Refund Amount :</label>
-        <input type="number" name="refund_amount" class="form-control" value="{{(int)($order->total_amount + $order->delivery_charge)}}" disabled />
+        <input type="number" name="refund_amount" class="form-control" value="{{ $order->payment_method == 'cod' ? $order->delivery_charge : (int)$order->total_amount }}" disabled />
       </div>
       <button type="submit" class="btn btn-primary">Update</button>
     </form>

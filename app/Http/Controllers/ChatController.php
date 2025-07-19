@@ -41,7 +41,8 @@ class ChatController extends Controller
     public function show($id)
     {
         $chat = Chat::with(['messages.user', 'user', 'admin'])->findOrFail($id);
-        return view('backend.chat-messages', compact('chat'));
+        $isAdmin = Auth::user()->role=='admin' ? true : false;
+        return view('backend.chat-messages', compact('chat','isAdmin'));
     }
 
     public function sendMessage(Request $request, $chatId)

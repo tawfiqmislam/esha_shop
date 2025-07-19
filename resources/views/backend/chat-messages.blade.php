@@ -1,4 +1,4 @@
-@extends('backend.layouts.master')
+@extends($isAdmin ? 'backend.layouts.master' : 'user.layouts.master')
 
 @section('main-content')
 <div class="card">
