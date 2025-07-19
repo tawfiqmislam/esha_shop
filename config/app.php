@@ -14,6 +14,8 @@ return [
     'revesms_caller_id' => env('REVESMS_CALLER_ID', null),
     'revesms_client' => env('REVESMS_CLIENT', null),
 
+    'delivery_charge' => env('DELIVERY_CHARGE', 100),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

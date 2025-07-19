@@ -23,7 +23,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=Order::orderBy('id','DESC')->paginate(10);
+        $orders=Order::where('payment_status','paid')->orderBy('id','DESC')->paginate(10);
         return view('backend.order.index')->with('orders',$orders);
     }
 
@@ -76,6 +76,9 @@ class OrderController extends Controller
         if(session('coupon')){
             $order_data['coupon']=session('coupon')['value'];
         }
+        if(request('payment_method')=='cod'){
+            $order_data['delivery_charge']=config('app.delivery_charge');
+        }
         if($request->shipping){
             if(session('coupon')){
                 $order_data['total_amount']=Helper::totalCartPrice()+$shipping[0]-session('coupon')['value'];
@@ -117,18 +120,18 @@ class OrderController extends Controller
             'fas'=>'fa-file-alt'
         ];
         Notification::send($users, new StatusNotification($details));
-        if(request('payment_method')=='paypal'){
-            return redirect()->route('payment')->with(['id'=>$order->id]);
-        } else if(request('payment_method')=='sslcommerz'){
+        // if(request('payment_method')=='paypal'){
+        //     return redirect()->route('payment')->with(['id'=>$order->id]);
+        // } else if(request('payment_method')=='sslcommerz'){
             return redirect()->route('sslcommerz.pay')->with(['id'=>$order->id]);
-        } else{
-            $sms->send([[
-                'phone' => $request->phone,
-                'message' => "Your order has been placed. Order number: $order->order_number"
-            ]]);
-            session()->forget('cart');
-            session()->forget('coupon');
-        }
+        // } else{
+        //     $sms->send([[
+        //         'phone' => $request->phone,
+        //         'message' => "Your order has been placed. Order number: $order->order_number"
+        //     ]]);
+        //     session()->forget('cart');
+        //     session()->forget('coupon');
+        // }
         Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
         // dd($users);        

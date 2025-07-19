@@ -88,9 +88,6 @@
     <!-- Content Row -->
 
     <div class="row">
-      @php
-          $orders=DB::table('orders')->where('user_id',auth()->user()->id)->paginate(10);
-      @endphp
       <!-- Order -->
       <div class="col-xl-12 col-lg-12">
         <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
@@ -103,6 +100,7 @@
               <th>Quantity</th>
               <th>Total Amount</th>
               <th>Status</th>
+              <th>Date</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -115,6 +113,7 @@
               <th>Quantity</th>
               <th>Total Amount</th>
               <th>Status</th>
+              <th>Date</th>
               <th>Action</th>
               </tr>
           </tfoot>
@@ -139,6 +138,7 @@
                           <span class="badge badge-danger">{{$order->status}}</span>
                         @endif
                     </td>
+                    <td>{{$order->created_at->format('M d D, Y g: i a')}}</td>
                     <td>
                         <a href="{{route('user.order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
                         <form method="POST" action="{{route('user.order.delete',[$order->id])}}">

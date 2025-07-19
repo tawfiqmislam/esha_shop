@@ -30,7 +30,9 @@ class HomeController extends Controller
 
 
     public function index(){
-        return view('user.index');
+        $orders=Order::orderBy('id','DESC')->where('payment_status','paid')->where('user_id',auth()->user()->id)->paginate(10);
+
+        return view('user.index', compact('orders'));
     }
 
     public function profile(){
@@ -55,7 +57,7 @@ class HomeController extends Controller
 
     // Order
     public function orderIndex(){
-        $orders=Order::orderBy('id','DESC')->where('user_id',auth()->user()->id)->paginate(10);
+        $orders=Order::orderBy('id','DESC')->where('payment_status','paid')->where('user_id',auth()->user()->id)->paginate(10);
         return view('user.order.index')->with('orders',$orders);
     }
     public function userOrderDelete($id)

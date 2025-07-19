@@ -27,7 +27,7 @@ class SslCommerzPaymentController extends Controller
         # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
 
         $post_data = array();
-        $post_data['total_amount'] = $order->total_amount; # You cant not pay less than 10
+        $post_data['total_amount'] = $order->payment_method == 'cod' ? $order->delivery_charge : $order->total_amount; # You cant not pay less than 10
         $post_data['currency'] = "BDT";
         $post_data['tran_id'] = $order->order_number; // tran_id must be unique
 
@@ -85,7 +85,7 @@ class SslCommerzPaymentController extends Controller
             'message' => "Your order has been placed. Your order number is: ".$order_details->order_number
         ]];
 
-        if ($order_details->payment_status == 'pending') {
+        if ($order_details->payment_status == 'pending' || $order_details->payment_status == 'unpaid') {
             $validation = $sslc->orderValidate($request->all(), $tran_id, $amount, $currency);
 
             if ($validation) {
@@ -136,7 +136,7 @@ class SslCommerzPaymentController extends Controller
 
         $order_details = Order::where('order_number', $tran_id)->first();
 
-        if ($order_details->payment_status == 'pending') {
+        if ($order_details->payment_status == 'pending' || $order_details->payment_status == 'unpaid') {
             $order_details->update(['payment_status' => 'failed']);
             session()->flash('error', 'Transaction is Failed');
         } else if ($order_details->payment_status == 'processing' || $order_details->payment_status == 'paid') {
@@ -153,7 +153,7 @@ class SslCommerzPaymentController extends Controller
 
         $order_details = Order::where('order_number', $tran_id)->first();
 
-        if ($order_details->payment_status == 'pending') {
+        if ($order_details->payment_status == 'pending' || $order_details->payment_status == 'unpaid') {
             $order_details->update(['payment_status' => 'cancelled']);
             session()->flash('error', 'Transaction is Cancelled');
         } else if ($order_details->payment_status == 'processing' || $order_details->payment_status == 'paid') {
@@ -175,7 +175,7 @@ class SslCommerzPaymentController extends Controller
             #Check order status in order tabel against the transaction id or order id.
             $order_details = Order::where('order_number', $tran_id)->first();
 
-            if ($order_details->payment_status == 'pending') {
+            if ($order_details->payment_status == 'pending' || $order_details->payment_status == 'unpaid') {
                 $sslc = new SslCommerzNotification();
                 $validation = $sslc->orderValidate($request->all(), $tran_id, $order_details->amount, $order_details->currency);
                 if ($validation == TRUE) {

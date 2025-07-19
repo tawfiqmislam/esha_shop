@@ -363,16 +363,16 @@
                                     <ul>
                                         <li class="order_subtotal" data-price="{{Helper::totalCartPrice()}}">Cart Subtotal<span>${{number_format(Helper::totalCartPrice(),2)}}</span></li>
                                         <li class="shipping">
-                                            Shipping Cost
                                             @if(count(Helper::shipping())>0 && Helper::cartCount()>0)
+                                                Shipping Cost
                                                 <select name="shipping" class="nice-select">
                                                     <option value="">Select your address</option>
                                                     @foreach(Helper::shipping() as $shipping)
                                                     <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: ${{$shipping->price}}</option>
                                                     @endforeach
                                                 </select>
-                                            @else 
-                                                <span>Free</span>
+                                            {{-- @else 
+                                                <span>Free</span> --}}
                                             @endif
                                         </li>
                                         
@@ -399,6 +399,9 @@
                                 <h2>Payments</h2>
                                 <div class="content">
                                     <div class="checkbox">
+                                        <p>
+                                            For Cash on Delivery, you need to pay {{config('app.delivery_charge')}} BDT in as advance.
+                                        </p>
                                         {{-- <label class="checkbox-inline" for="1"><input name="updates" id="1" type="checkbox"> Check Payments</label> --}}
                                         <form-group>
                                             <input name="payment_method"  type="radio" value="cod"> <label> Cash On Delivery</label><br>

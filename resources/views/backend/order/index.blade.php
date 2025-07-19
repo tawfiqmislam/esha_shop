@@ -26,6 +26,7 @@
               <th>Total Amount</th>
               <th>Payment Status</th>
               <th>Delivery Status</th>
+              <th>Date</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -40,6 +41,7 @@
               <th>Payment Status</th>
               <th>Delivery Status</th>
               <th>Status</th>
+              <th>Date</th>
               <th>Action</th>
               </tr>
           </tfoot>
@@ -54,7 +56,8 @@
                     <td>{{$order->first_name}} {{$order->last_name}}</td>
                     <td>{{$order->email}}</td>
                     <td>{{$order->quantity}}</td>
-                    <td>@foreach($shipping_charge as $data) $ {{number_format($data,2)}} @endforeach</td>
+                    {{-- <td>@foreach($shipping_charge as $data) $ {{number_format($data,2)}} @endforeach</td> --}}
+                    <td>${{$order->delivery_charge}}</td>
                     <td>${{number_format($order->total_amount,2)}}</td>
                     <td>
                       <span class="badge badge-primary">{{$order->payment_status}}</span>
@@ -70,6 +73,7 @@
                           <span class="badge badge-danger">{{$order->status}}</span>
                         @endif
                     </td>
+                    <td>{{$order->created_at->format('M d D, Y g: i a')}}</td>
                     <td>
                         <a href="{{route('order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
                         <a href="{{route('order.edit',$order->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
