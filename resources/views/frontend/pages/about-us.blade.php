@@ -1,6 +1,6 @@
 @extends('frontend.layouts.master')
 
-@section('title', 'ESHA SHOP || About Us')
+@section('title', 'Periwinkle Easel || About Us')
 
 @section('main-content')
 
@@ -30,7 +30,7 @@
                         @php
                             $settings = DB::table('settings')->get();
                         @endphp
-                        <h3>Welcome To <span>Esha Shop</span></h3>
+                        <h3>Welcome To <span> Periwinkle Easel</span></h3>
                         <p>
                             @foreach ($settings as $data)
                                 {{ $data->description }}
@@ -47,13 +47,13 @@
                         {{-- <div class="button">
 								<a href="https://www.youtube.com/watch?v=nh2aYrGMrIE" class="video video-popup mfp-iframe"><i class="fa fa-play"></i></a>
 							</div> --}}
-                        <img src="{{ asset('frontend/img/logo.png') }}"
+                        <img src="{{ $settings[0]->logo ?? asset('frontend/img/logo.png') }}"
                             alt="@foreach ($settings as $data) {{ $data->photo }} @endforeach">
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </section>Shop
     <!-- End About Us -->
 
 

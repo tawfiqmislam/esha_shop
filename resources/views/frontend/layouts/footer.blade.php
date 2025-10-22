@@ -6,14 +6,14 @@
             <div class="row">
                 <div class="col-lg-5 col-md-6 col-12">
                     <!-- Single Widget -->
+                    @php
+                        $settings = DB::table('settings')->get();
+                    @endphp
                     <div class="single-footer about">
                         <div class="logo">
-                            <a href="index.html"><img src="{{ asset('frontend/img/logo.png') }}" alt="#"
+                            <a href="index.html"><img src="{{ $settings[0]->logo ?? asset('frontend/img/logo.png') }}" alt="#"
                                     style="height: 100px;"></a>
                         </div>
-                        @php
-                            $settings = DB::table('settings')->get();
-                        @endphp
                         <p class="text">
                             @foreach ($settings as $data)
                                 {{ $data->short_des }}
@@ -58,7 +58,7 @@
                 <div class="col-lg-3 col-md-6 col-12">
                     <!-- Single Widget -->
                     <div class="single-footer social">
-                        <h4>Get In Tuch</h4>
+                        <h4>Get In Touch</h4>
                         <!-- Single Widget -->
                         <div class="contact">
                             <ul>

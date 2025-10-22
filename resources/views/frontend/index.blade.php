@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title','Esha SHOP || HOME PAGE')
+@section('title','Periwinkle Easel || HOME PAGE')
 @section('main-content')
 <!-- Slider Area -->
 @if(count($banners)>0)
@@ -10,12 +10,13 @@
             @endforeach
 
         </ol>
-        <div class="carousel-inner" role="listbox">
+        <div class="carousel-inner" style="height:400px !important;" role="listbox">
                 @foreach($banners as $key=>$banner)
                 <div class="carousel-item {{(($key==0)? 'active' : '')}}">
-                    <img class="first-slide" src="{{$banner->photo}}" alt="First slide">
+                    <img class="first-slide" style="height: 400px;" src="{{$banner->photo}}" alt="First slide">
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h1 class="wow fadeInDown">{{$banner->title}}</h1>
+                        
+                        <h1 class="wow fadeInDown" style="color: #FFFFFF !important;">{{$banner->title}}</h1>
                         <p>{!! html_entity_decode($banner->description) !!}</p>
                         <a class="btn btn-lg ws-btn wow fadeInUpBig" href="{{route('product-grids')}}" role="button">Shop Now<i class="far fa-arrow-alt-circle-right"></i></i></a>
                     </div>
@@ -569,7 +570,7 @@
         }
 
         #Gslider .carousel-inner .carousel-caption {
-        bottom: 60%;
+        bottom: 10%;
         }
 
         #Gslider .carousel-inner .carousel-caption h1 {

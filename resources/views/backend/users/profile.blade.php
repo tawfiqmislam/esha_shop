@@ -107,7 +107,7 @@
       content:"/\00a0";
     }
     .image{
-        background:url('{{asset('backend/img/background.jpg')}}');
+        background:url('{{asset('downloads/paint-canvas.jpg')}}');
         height:150px;
         background-position:center;
         background-attachment:cover;
