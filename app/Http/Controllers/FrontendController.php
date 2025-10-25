@@ -378,7 +378,7 @@ class FrontendController extends Controller
         // return $request->all();
         $this->validate($request,[
             'name'=>'string|required|min:2',
-            'email'=>'string|required|unique:users,email',
+            'email'=>'required|string|email|max:100|unique:users,email',
             'password'=>'required|min:6|confirmed',
         ]);
         $data=$request->all();

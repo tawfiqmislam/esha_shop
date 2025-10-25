@@ -126,8 +126,8 @@
                                                 $org = $product->price - ($product->price * $product->discount) / 100;
                                             @endphp
                                             <p class="price"><del
-                                                    class="text-muted">${{ number_format($product->price, 2) }}</del>
-                                                ${{ number_format($org, 2) }} </p>
+                                                    class="text-muted"><symbol>৳</symbol>{{ number_format($product->price, 2) }}</del>
+                                                <symbol>৳</symbol>{{ number_format($org, 2) }} </p>
                                         </div>
                                     </div>
                                     <!-- End Single Post -->
@@ -245,8 +245,8 @@
                                                                     $product->price -
                                                                     ($product->price * $product->discount) / 100;
                                                             @endphp
-                                                            <span>${{ number_format($after_discount, 2) }}</span>
-                                                            <del>${{ number_format($product->price, 2) }}</del>
+                                                            <span><symbol>৳</symbol>{{ number_format($after_discount, 2) }}</span>
+                                                            <del><symbol>৳</symbol>{{ number_format($product->price, 2) }}</del>
                                                         </div>
                                                         <h3 class="title"><a
                                                                 href="{{ route('product-detail', $product->slug) }}">{{ $product->title }}</a>
@@ -350,8 +350,8 @@
                                                 $product->price - ($product->price * $product->discount) / 100;
                                         @endphp
                                         <h3><small><del
-                                                    class="text-muted">${{ number_format($product->price, 2) }}</del></small>
-                                            ${{ number_format($after_discount, 2) }} </h3>
+                                                    class="text-muted"><symbol>৳</symbol>{{ number_format($product->price, 2) }}</del></small>
+                                            <symbol>৳</symbol>{{ number_format($after_discount, 2) }} </h3>
                                         <div class="quickview-peragraph">
                                             <p>{!! html_entity_decode($product->summary) !!}</p>
                                         </div>

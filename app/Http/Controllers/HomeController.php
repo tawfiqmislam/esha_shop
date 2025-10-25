@@ -9,6 +9,7 @@ use App\Models\ProductReview;
 use App\Models\PostComment;
 use App\Rules\MatchOldPassword;
 use Hash;
+use Illuminate\Support\Carbon;
 
 class HomeController extends Controller
 {
@@ -73,7 +74,7 @@ class HomeController extends Controller
                     'status'=>'cancel',
                     'cancel_by'=>'user',
                     'cancel_date'=>date('Y-m-d'),
-                    'is_refundable' => $order->created_at->diffInDays(now()) < 7 ? 1 : 0,
+                    'is_refundable' => $order->created_at->diffInDays(now()) < 1 ? 1 : 0,
                 ]);
                 if($status){
                     request()->session()->flash('success','Order Successfully canceled');

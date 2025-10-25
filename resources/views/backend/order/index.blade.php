@@ -56,9 +56,9 @@
                     <td>{{$order->first_name}} {{$order->last_name}}</td>
                     <td>{{$order->email}}</td>
                     <td>{{$order->quantity}}</td>
-                    {{-- <td>@foreach($shipping_charge as $data) $ {{number_format($data,2)}} @endforeach</td> --}}
-                    <td>${{$order->delivery_charge}}</td>
-                    <td>${{number_format($order->total_amount,2)}}</td>
+                    {{-- <td>@foreach($shipping_charge as $data) <symbol>৳</symbol> {{number_format($data,2)}} @endforeach</td> --}}
+                    <td><symbol>৳</symbol>{{$order->delivery_charge}}</td>
+                    <td><symbol>৳</symbol>{{number_format($order->total_amount,2)}}</td>
                     <td>
                       <span class="badge badge-primary">{{$order->payment_status}}</span>
                     </td>

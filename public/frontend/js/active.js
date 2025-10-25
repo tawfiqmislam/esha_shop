@@ -301,6 +301,26 @@ window.onload = () => {
 	18. Nice Select JS
 	======================================*/	
 	$('select').niceSelect();
+	$('form').on('submit', function(e) {
+		let errorCount = 0;
+		$(this).find('select.required').each(function(index, item) {
+			if($(item).val() == ''){
+				errorCount++;
+			
+				$(item).next('.nice-select').addClass('error-focus');
+			}
+		});
+		if(errorCount > 0) {
+			e.preventDefault();
+		}
+	});
+	$('select.required').on('change', function() {
+		if ($(this).val() !== '') {
+			$(this).next('.nice-select').removeClass('error-focus');
+		}
+	});
+
+
 		
 	/*=====================================
 	 Others JS

@@ -173,6 +173,11 @@ class Helper{
     public static function shipping(){
         return Shipping::orderBy('id','DESC')->get();
     }
+
+    function isValidEmail($input) {
+        // Check if the input is a valid email address
+        return filter_var($input, FILTER_VALIDATE_EMAIL) !== false;
+    }
 }
 
 ?>

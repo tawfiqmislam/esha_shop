@@ -143,7 +143,7 @@
 <script src="{{ asset('frontend/js/easing.js') }}"></script>
 
 <!-- Active JS -->
-<script src="{{ asset('frontend/js/active.js') }}"></script>
+<script src="{{ asset('frontend/js/active.js') }}?v=1.0.1"></script>
 
 
 @stack('scripts')
