@@ -24,7 +24,7 @@
     <!-- Start Checkout -->
     <section class="shop checkout section">
         <div class="container">
-            <form class="form" method="POST" action="{{ route('cart.order') }}">
+            <form class="form" method="POST" action="{{ route('cart.order') }}" id="cart-order-form">
                 @csrf
                 <div class="row">
 
@@ -65,10 +65,18 @@
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="form-group">
                                         <label>Phone Number <span>*</span></label>
-                                        <input type="number" name="phone" placeholder="" required
-                                            value="{{ old('phone') }}">
+                                        <input type="hidden" name="phone" id="phone" value="{{ old('phone') }}">
+                                        <input type="tel" 
+                                            id="formatted_phone"
+                                            name="formatted_phone"
+                                            placeholder="e.g. 01712345678" 
+                                            maxlength="13"
+                                            value="{{ old('phone') }}"
+                                            required>
                                         @error('phone')
-                                            <span class='text-danger'>{{ $message }}</span>
+                                            <span id="phone_error" class='text-danger'>{{ $message }}</span>
+                                        @else
+                                            <span id="phone_error" class='text-danger' style="display: none"></span>
                                         @enderror
                                     </div>
                                 </div>
@@ -338,9 +346,6 @@
 @endsection
 @push('styles')
 	<style>
-        .nice-select span {
-            float: unset !important;
-        }
 	</style>
 @endpush
 @push('scripts')
@@ -351,9 +356,67 @@
                 let subtotal = parseFloat($('.order_subtotal').data('price'));
                 let coupon = parseFloat($('.coupon_price').data('price')) || 0;
                 // alert(coupon);
-                $('#order_total_price span').text('<symbol>৳</symbol>' + (subtotal + cost - coupon).toFixed(2));
+                $('#order_total_price span').text('৳' + (subtotal + cost - coupon).toFixed(2));
             });
 
+            const $orgPhone = $('#phone');
+            const $phoneInput = $('#formatted_phone');
+            const $phoneErrorSection = $('#phone_error');
+
+            const getCleanPhone = () => $phoneInput.val().replace(/\D/g, '');
+
+            $phoneInput.on('focusout', validatePhoneNumber);
+
+            $phoneInput.on('input', function(e) {
+                let value = getCleanPhone();
+                let valueLen = value.length;
+
+                $orgPhone.val(valueLen > 11 ? value.substring(0, 11) : value);
+
+                let formattedValue = value;
+                
+                // Limit to 11 digits
+                if (valueLen > 11) formattedValue = formattedValue.substring(0, 11);
+                
+                // Auto-format with space after 3 and 8 digits for readability
+                if (valueLen > 3) 
+                    formattedValue = formattedValue.substring(0, 3) + ' ' + formattedValue.substring(3);
+
+                if (valueLen > 8) 
+                    formattedValue = formattedValue.substring(0, 8) + ' ' + formattedValue.substring(8);
+                
+                $(this).val(formattedValue);
+                
+                // Auto-validate as user types
+                if (valueLen >= 11) validatePhoneNumber();
+                else $phoneErrorSection.hide();
+            });
+
+            function validatePhoneNumber() {
+                const cleanPhone = getCleanPhone();
+                if(cleanPhone.length == 0) return null;
+
+                const operatorCodes = ['3', '4', '5', '6', '7', '8', '9'];
+                const message = {
+                    [cleanPhone.length !== 11]: "Phone number must be 11 digits",
+                    [cleanPhone.length > 2 && !operatorCodes.includes(cleanPhone.charAt(2))]: "Invalid operator code",
+                    [!cleanPhone.startsWith('01')]: "Phone number must start with 01",
+                }[true] || null;
+                
+                $phoneErrorSection.text(message || '');
+
+                if (message) $phoneErrorSection.show();
+                else $phoneErrorSection.hide();
+                
+                // console.log(message);
+                return message;
+            }
+
+            $("#cart-order-form").on('submit', function(e) {
+                let phoneError = validatePhoneNumber();
+                if (phoneError) 
+                    e.preventDefault();
+            });
         });
     </script>
 @endpush

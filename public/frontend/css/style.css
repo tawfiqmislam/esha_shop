@@ -4956,6 +4956,9 @@ Version:1.0
 symbol {
 	font-family: auto !important;
 }
+.nice-select span {
+	float: unset !important;
+}
 
 /*=============================
 	End Footer CSS
