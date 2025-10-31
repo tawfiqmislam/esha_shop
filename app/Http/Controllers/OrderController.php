@@ -13,6 +13,7 @@ use Helper;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
 use App\Services\ReveSmsGateway;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -161,7 +162,11 @@ class OrderController extends Controller
     public function edit($id)
     {
         $order=Order::find($id);
-        return view('backend.order.edit')->with('order',$order);
+        return view('backend.order.edit')->with([
+            'order' => $order,
+            'sendCodeUri' => route('order.delivered.confirmation', $order->id),
+            'checkCodeUri' => route('order.delivered.confirmation.check', $order->id),
+        ]);
     }
 
     /**
@@ -176,11 +181,19 @@ class OrderController extends Controller
         $order=Order::find($id);
         $this->validate($request,[
             'status'=>'required|in:new,process,delivered,cancel,refunded',
-            'refund_amount'=>'required_if:status,refunded'
+            'refund_amount'=>'required_if:status,refunded',
+            'sms_code'=>'required_if:status,delivered'
         ]);
         $data=$request->all();
+
+        if($request->status == $order->status) 
+            return redirect()->route('order.index');
+
         // return $request->status;
-        if($request->status=='delivered'){
+        if($request->status=='delivered') {
+            if($order->delivered_confirmation_code != $request->sms_code) 
+                return back()->with('error','Invalid confirmation code');
+            
             foreach($order->cart as $cart){
                 $product=$cart->product;
                 // return $product;
@@ -190,6 +203,7 @@ class OrderController extends Controller
         } else if($request->status=='refunded'){
             $data['refund_date']=date('Y-m-d');
         }
+
         $status=$order->fill($data)->save();
         if($status){
             request()->session()->flash('success','Successfully updated order');
@@ -298,5 +312,40 @@ class OrderController extends Controller
             $data[$monthName] = (!empty($result[$i]))? number_format((float)($result[$i]), 2, '.', '') : 0.0;
         }
         return $data;
+    }
+
+    public function sendDeliveredConfirmationCode(Request $request, ReveSmsGateway $sms) {
+        $order=Order::find($request->id);
+        if($order->status == 'delivered') {
+            return response()->json([
+                'message' => 'Order already delivered',
+                'success' => 0
+            ], 400);
+        }
+        $order->delivered_confirmation_code = rand(1000,9999);
+        $order->save();
+        $sms->send([
+            'phone' => $order->phone,
+            'message' => "Order has been delivered. Your confirmation code is {$order->delivered_confirmation_code}."
+        ]);
+
+        return response()->json([
+            'message' => 'Delivered confirmation code sent successfully',
+            'success' => 1
+        ], 200);
+    }
+
+    public function checkDeliveredConfirmationCode(Request $request) {
+        $order = Order::find($request->id);
+        if($order->delivered_confirmation_code == $request->code) {
+            return response()->json([
+                'message' => 'Matched',
+                'success' => 1
+            ], 200);
+        }
+        return response()->json([
+            'message' => 'Invalid code',
+            'success' => 0
+        ], 400);
     }
 }

@@ -162,6 +162,10 @@ use \UniSharp\LaravelFilemanager\Lfm;
 
         // Order
         Route::resource('/order', 'OrderController');
+
+        Route::post('send-sms/order/{id}/delivered-confirmation', [OrderController::class, 'sendDeliveredConfirmationCode'])->name('order.delivered.confirmation');
+        Route::post('check-sms/order/{id}/delivered-confirmation', [OrderController::class, 'checkDeliveredConfirmationCode'])->name('order.delivered.confirmation.check');
+
         // Shipping
         Route::resource('/shipping', 'ShippingController');
         // Coupon

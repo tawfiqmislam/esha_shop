@@ -5,8 +5,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable=['user_id','order_number','sub_total','quantity','delivery_charge','status','total_amount','first_name','last_name','district','post_code','address1','address2','phone','email','payment_method','payment_status','shipping_id','coupon', 'delivery_charge',
-    'cancel_by', 'cancel_date', 'is_refundable', 'refund_amount', 'refund_date',
+    protected $fillable = [
+        'user_id',
+        'order_number',
+        'sub_total',
+        'quantity',
+        'delivery_charge',
+        'status',
+        'total_amount',
+        'first_name',
+        'last_name',
+        'district',
+        'post_code',
+        'address1',
+        'address2',
+        'phone',
+        'email',
+        'payment_method',
+        'payment_status',
+        'shipping_id',
+        'coupon',
+        'delivery_charge',
+        'cancel_by',
+        'cancel_date',
+        'is_refundable',
+        'refund_amount',
+        'refund_date',
+        'delivered_confirmation_code',
     ];
 
     public function cart_info(){
