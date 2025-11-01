@@ -324,10 +324,10 @@ class OrderController extends Controller
         }
         $order->delivered_confirmation_code = rand(1000,9999);
         $order->save();
-        $sms->send([
+        $sms->send([[
             'phone' => $order->phone,
             'message' => "Order has been delivered. Your confirmation code is {$order->delivered_confirmation_code}."
-        ]);
+        ]]);
 
         return response()->json([
             'message' => 'Delivered confirmation code sent successfully',
